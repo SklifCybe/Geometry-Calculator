@@ -4,6 +4,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JTextArea;
 
+/**
+ * Страница об авторе
+ */
 public class AboutAuthor extends JDialog {
     JTextArea textArea = new JTextArea(5, 10);
     Button buttonBack = new Button("Вернуться назад");

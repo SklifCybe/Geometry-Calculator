@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
+/**
+ * Главная страница приложения
+ */
 public class Calculator {
     final int WIDTH_MAIN_PAGE = 800, HEIGHT_MAIN_PAGE = 500;
     final String TITLE_MAIN_PAGE = "Геометрический калькулятор. Усеченный конус";
@@ -33,6 +36,8 @@ public class Calculator {
     JLabel pictureLabel;
     static JLabel calculateResult = new JLabel("");
     static int currentOperationIndex;
+
+    // Конструктор в котором происходят основные настройки
     Calculator(){
         mainFrame = new Frame(TITLE_MAIN_PAGE);
         mainFrame.setSize(WIDTH_MAIN_PAGE, HEIGHT_MAIN_PAGE);
@@ -82,12 +87,14 @@ public class Calculator {
         });
     }
 
+    // Добавление 3-ёх основных панелей на главный кадр
     private void addPanelsToFrame(Frame baseFrame, Panel[] panels) {
         for (Panel panel : panels) {
             baseFrame.add(panel);
         }
     }
 
+    // Добавление картинки на PicturePanel
     private void addFrustumImageToPicturePanel(String localPathToFile, Panel currentPanel) {
         try {
             File frustumFile = new File(projectDirectory + localPathToFile);
@@ -99,12 +106,14 @@ public class Calculator {
         }
     }
 
+    // Изменение текущей картинки на PicturePanel
     private void changeCurrentFrustumImageFromPicturePanel(String localPathToFile, Panel currentPanel) {
         currentPanel.remove(pictureLabel);
         addFrustumImageToPicturePanel(localPathToFile, currentPanel);
         currentPanel.repaint();
     }
 
+    // Добавление основных свойств к картинке, в PicturePanel
     private void addMainPropertiesToPicturePanel(Panel currentPanel) {
         String[] properties = {
                 "Свойства:",
@@ -123,6 +132,7 @@ public class Calculator {
         currentPanel.add(propertiesLabel);
     }
 
+    // Создание кнопок для ButtonPanel
     private void createButtonsForButtonPanel(Button[] buttons, ActionListener[] listeners, Panel currentPanel) {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].addActionListener(listeners[i]);
@@ -130,6 +140,7 @@ public class Calculator {
         }
     }
 
+    // Создание пользовательского интерфейса калькулятора
     private void createCalculateUI(Panel currentPanel) {
         JLabel titleLabel = new JLabel("Выберите из предложенных данных:");
         currentPanel.add(titleLabel);
@@ -221,12 +232,14 @@ public class Calculator {
         });
     }
 
+    // Отчистка текстовых полей в форме
     private void clearTextFields(JTextField[] fields) {
         for (JTextField field : fields) {
             field.setText("");
         }
     }
 
+    // Установка видимости текстовых полей и заголовков
     private void setVisibleLabelAndTextField(JTextField[] textFields, JLabel[] labels, boolean isVisible) {
         for (JTextField textField : textFields) {
             textField.setVisible(isVisible);
@@ -236,6 +249,7 @@ public class Calculator {
         }
     }
 
+    // Слушатель на кнопку "О программе"
     private static class AboutProgramListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -243,6 +257,7 @@ public class Calculator {
         }
     }
 
+    // Слушатель на кнопку "Об авторе"
     private static class AboutAuthorListener implements  ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -250,6 +265,7 @@ public class Calculator {
         }
     }
 
+    // Слушатель на кнопку "Отчистить форму"
     private static class ClearListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -262,6 +278,7 @@ public class Calculator {
         }
     }
 
+    // Слушатель на кнопку "Выйти"
     private static class ExitListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -269,6 +286,9 @@ public class Calculator {
         }
     }
 
+    /**
+     * Класс отвечающий за логику вычислений калькулятора
+     */
     private static class CalculateListener implements ActionListener {
         int firstValue, secondValue, thirdValue;
 
@@ -280,16 +300,10 @@ public class Calculator {
             if (!isIncorrectFields) return;
 
             calculateResult.setText("Результат вычислений:");
-            printValue();
             inferCalculation();
         }
-        private void printValue() {
-            // TODO: delete this method
-            System.out.println("Operation: " + currentOperationIndex);
-            System.out.println("First value: " + firstValue);
-            System.out.println("Second value: " + secondValue);
-            System.out.println("Third value: " + thirdValue);
-        }
+
+        // Вызывает нужный метод для вычислений, в зависимости от выбранной операции
         private void inferCalculation() {
             switch (currentOperationIndex) {
                 case 1 -> calculateRadiusAndForming();
@@ -298,12 +312,10 @@ public class Calculator {
                 case 4 -> calculateAreaAndHeight();
             }
         }
+
+        // Вычисление исходя из данных радиуса и образующей
         private void calculateRadiusAndForming() {
-            if (secondValue >= firstValue) {
-                calculateResult.setText("Ошибка. Неверные данные.");
-                resultCalculateFields.setText("");
-                return;
-            }
+            if (hasCorrectValue()) return;
 
             double height = Math.sqrt(Math.pow(thirdValue, 2) - Math.pow((secondValue - firstValue), 2));
             double volume = (1.0 / 3.0) * Math.PI * height *
@@ -335,12 +347,10 @@ public class Calculator {
                     overDiagonal
             );
         }
+
+        // Вычисление исходя из данных радиуса и высоты
         private void calculateRadiusAndHeight() {
-            if (secondValue >= firstValue) {
-                calculateResult.setText("Ошибка. Неверные данные.");
-                resultCalculateFields.setText("");
-                return;
-            }
+            if (hasCorrectValue()) return;
 
             double forming = Math.sqrt(Math.pow(thirdValue, 2) + Math.pow((firstValue - secondValue), 2));
             double volume = (1.0 / 3.0) * Math.PI * thirdValue *
@@ -372,12 +382,10 @@ public class Calculator {
                     overDiagonal
             );
         }
+
+        // Вычисление исходя из данных площади оснований и образующей
         private void calculateAreaAndForming() {
-            if (secondValue >= firstValue) {
-                calculateResult.setText("Ошибка. Неверные данные.");
-                resultCalculateFields.setText("");
-                return;
-            }
+            if (hasCorrectValue()) return;
 
             double underRadius = Math.sqrt(firstValue / Math.PI);
             double overRadius = Math.sqrt(secondValue / Math.PI);
@@ -407,12 +415,10 @@ public class Calculator {
                     overDiagonal
             );
         }
+
+        // Вычисление исходя из данных площади оснований и высоты
         private void calculateAreaAndHeight() {
-            if (secondValue >= firstValue) {
-                calculateResult.setText("Ошибка. Неверные данные.");
-                resultCalculateFields.setText("");
-                return;
-            }
+            if (hasCorrectValue()) return;
 
             double underRadius = Math.sqrt(firstValue / Math.PI);
             double overRadius = Math.sqrt(secondValue / Math.PI);
@@ -443,6 +449,40 @@ public class Calculator {
                     overDiagonal
             );
         }
+
+        // Простая проверка на заполненность текстовых полей
+        private boolean checkToCorrectTextFields() {
+            return firstValue != 0 && secondValue != 0 && thirdValue != 0 && currentOperationIndex != 0;
+        }
+
+        // Проверка на то, что площадь или радиус нижнего основания больше верхнего
+        private boolean hasCorrectValue() {
+            if (secondValue >= firstValue) {
+                calculateResult.setText("Ошибка. Неверные данные.");
+                resultCalculateFields.setText("");
+                return true;
+            }
+            return false;
+        }
+
+        // Преобразование текстовых палей в числа
+        private void parseTextFields(JTextField[] fields) {
+            try {
+                firstValue = Integer.parseInt(fields[0].getText());
+                secondValue = Integer.parseInt(fields[1].getText());
+                thirdValue = Integer.parseInt(fields[2].getText());
+            } catch(NumberFormatException error) {
+                calculateResult.setText("Введите корректные данные.");
+                resultCalculateFields.setText("");
+                System.out.println(error.getMessage());
+            }
+        }
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            new CalculateListener();
+        }
+
+        // Метод отвечающий за вывод результата
         private void formattingCalculationResult(boolean isHeight,
                                                  boolean isRadius,
                                                  double heightOrForming,
@@ -488,29 +528,5 @@ public class Calculator {
             resultCalculateFields.setText("<html>" + resultFieldsWithSpace + "</html>");
             calculatePanel.add(resultCalculateFields);
         }
-        private boolean checkToCorrectTextFields() {
-            return firstValue != 0 && secondValue != 0 && thirdValue != 0 && currentOperationIndex != 0;
-        }
-        private void parseTextFields(JTextField[] fields) {
-            try {
-                firstValue = Integer.parseInt(fields[0].getText());
-                secondValue = Integer.parseInt(fields[1].getText());
-                thirdValue = Integer.parseInt(fields[2].getText());
-            } catch(NumberFormatException error) {
-                calculateResult.setText("Введите корректные данные.");
-                resultCalculateFields.setText("");
-                System.out.println(error.getMessage());
-            }
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            new CalculateListener();
-        }
     }
-
-//    public static void main(String[] args) {
-//        // TODO: delete this method, because we should have only one point to enter
-//        new Calculator();
-//    }
 }

@@ -7,12 +7,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * Страница о программе
+ */
 public class AboutProgram extends JDialog {
     JTextArea textArea = new JTextArea();
     Button buttonBack = new Button("Вернуться назад");
-
-    JLabel frustumPicture = new JLabel(new javax.swing.ImageIcon(getClass().getResource("./assets/defaultFrustum.png")));
-
+    JLabel frustumLabel;
     AboutProgram() {
         setTitle("О программе");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -33,10 +34,9 @@ public class AboutProgram extends JDialog {
         String projectDirectory = System.getProperty("user.dir");
 
         try {
-            File frustumFile = new File(projectDirectory + "\\src\\assets\\image.png");
+            File frustumFile = new File(projectDirectory + "\\src\\assets\\defaultFrustum.png");
             BufferedImage frustumPicture = ImageIO.read(frustumFile);
-            JLabel picLabel = new JLabel(new ImageIcon(frustumPicture));
-            textArea.add(picLabel);
+            frustumLabel = new JLabel(new ImageIcon(frustumPicture));
         } catch(IOException error) {
             System.out.println(error.getMessage());
         }
@@ -44,7 +44,7 @@ public class AboutProgram extends JDialog {
         setLayout(new BorderLayout());
         add(textArea, BorderLayout.CENTER);
         add(panelButtonBack, BorderLayout.SOUTH);
-        add(frustumPicture, BorderLayout.WEST);
+        add(frustumLabel, BorderLayout.WEST);
 
         pack();
         setResizable(false);

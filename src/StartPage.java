@@ -9,6 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Страница "Добро пожаловать"
+ *
+ * @author I.E. Strelkovski
+ */
 public class StartPage {
     int WIDTH_START_PAGE = 375, HEIGHT_START_PAGE = 275;
     static Frame startFrame = new Frame("Геометрический калькулятор");
@@ -44,6 +49,7 @@ public class StartPage {
         });
     }
 
+    // Добавляю изображение на главную страницу
     private void addFrustumImageToMainPage() {
         try {
             File frustumFile = new File(projectDirectory + "\\src\\assets\\defaultFrustum.png");
@@ -55,6 +61,7 @@ public class StartPage {
         }
     }
 
+    // Слушетель клика на кнопку "Войти в калькулятор"
     private static class EnterListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
