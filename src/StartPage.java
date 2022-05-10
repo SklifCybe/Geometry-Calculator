@@ -38,6 +38,7 @@ public class StartPage {
         startFrame.add(enterButton);
         ActionListener enterButtonListener = new EnterListener();
         enterButton.addActionListener(enterButtonListener);
+        startFrame.setLocationRelativeTo(null);
 
         startFrame.setSize(WIDTH_START_PAGE, HEIGHT_START_PAGE);
 

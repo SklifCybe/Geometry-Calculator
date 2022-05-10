@@ -42,6 +42,7 @@ public class Calculator {
         mainFrame = new Frame(TITLE_MAIN_PAGE);
         mainFrame.setSize(WIDTH_MAIN_PAGE, HEIGHT_MAIN_PAGE);
         mainFrame.setLayout(new GridLayout());
+        mainFrame.setLocationRelativeTo(null);
         picturePanel = new Panel();
         calculatePanel = new Panel();
         buttonPanel = new Panel(new GridLayout(5, 1));
